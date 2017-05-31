@@ -26,6 +26,14 @@ def establishments_keys():
 def geocode_keys():
     return ['nearby_restaurants', 'popularity', 'link', 'location']
 
+@fixture
+def locations_keys():
+    return ['status', 'has_more', 'location_suggestions', 'has_total']
+
+@fixture
+def location_detail_keys():
+    return ['top_cuisines', 'subzone', 'num_restaurant', 'city', 'nightlife_res', 'popularity', 'best_rated_restaurant', 'nightlife_index', 'nearby_res', 'location', 'popularity_res', 'subzone_id']
+
 def test_zomato():
     """
     Tests an API call to get zomato data
@@ -41,3 +49,8 @@ def test_zomato():
     assert set(cuisines_keys()).issubset(zomato.get_cuisines(city_id=3).keys())
     assert set(establishments_keys()).issubset(zomato.get_establishments(city_id=3).keys())
     assert set(geocode_keys()).issubset(zomato.get_geocode(latitude="19.0985059",longitude="72.8850437").keys())
+    res = zomato.get_locations(query="Bandra")
+    assert set(locations_keys()).issubset(res.keys())
+    assert set(location_detail_keys()).issubset(zomato.get_location_details(entity_type=res['location_suggestions'][0]['entity_type']
+, entity_id=res['location_suggestions'][0]['entity_id']
+).keys())

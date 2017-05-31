@@ -58,4 +58,13 @@ class Zomato(object):
         req = self.make_get_request(url = self.get_request_url("geocode"), params = params)
         return req.json()
 
+    def get_locations(self, query="", latitude="", longitude="", count=25):
+        params = {"query":query, "lat": latitude, "lon": longitude, "count": count}
+        req = self.make_get_request(url = self.get_request_url("locations"), params = params)
+        return req.json()
+
+    def get_location_details(self, entity_type="", entity_id=""):
+        params = {"entity_id":entity_id, "entity_type":entity_type}
+        req = self.make_get_request(url = self.get_request_url("location_details"), params = params)
+        return req.json()
     
