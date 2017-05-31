@@ -10,6 +10,22 @@ def category_keys():
 def mumbai_json():
     return {'has_more': 0,'has_total': 0,'location_suggestions': [{'country_id': 1,'country_name': 'India','discovery_enabled': 0,'has_new_ad_format': 1,'id': 3,'is_state': 0,'name': 'Mumbai','should_experiment_with': 0,'state_code': '','state_id': 0,'state_name': ''}],'status': 'success'}
 
+@fixture
+def collections_keys():
+    return ['has_more', 'display_text', 'collections', 'has_total', 'share_url']
+
+@fixture
+def cuisines_keys():
+    return ['cuisines']
+
+@fixture
+def establishments_keys():
+    return ['establishments']
+
+@fixture
+def geocode_keys():
+    return ['nearby_restaurants', 'popularity', 'link', 'location']
+
 def test_zomato():
     """
     Tests an API call to get zomato data
@@ -21,3 +37,7 @@ def test_zomato():
     assert zomato.get_request_headers(developer_key=zomato_developer_key) == {'Accept':'application/json','user-key':zomato_developer_key} #, "developer key should be present"
     assert set(category_keys()).issubset(zomato.get_categories().keys())#, "All keys should be in the response"
     assert zomato.get_cities(query="Mumbai") == mumbai_json()
+    assert set(collections_keys()).issubset(zomato.get_collections(city_id=3).keys())
+    assert set(cuisines_keys()).issubset(zomato.get_cuisines(city_id=3).keys())
+    assert set(establishments_keys()).issubset(zomato.get_establishments(city_id=3).keys())
+    assert set(geocode_keys()).issubset(zomato.get_geocode(latitude="19.0985059",longitude="72.8850437").keys())
